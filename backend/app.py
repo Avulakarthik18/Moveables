@@ -7,6 +7,11 @@ import smtplib
 from email.message import EmailMessage
 import os
 import json
+import traceback
+from datetime import datetime
+import uuid
+
+
 
 app = Flask(__name__)
 CORS(app)
@@ -312,13 +317,19 @@ def send_booking_email(data):
 # -----------------------------
 # SIGNUP (USER ONLY)
 # -----------------------------
+from datetime import datetime
+import uuid
+
 @app.route("/signup", methods=["POST"])
 def signup():
 
     data = request.get_json(silent=True)
 
     if not data:
-        return jsonify({"success": False, "message": "Invalid request ❌"}), 400
+        return jsonify({
+            "success": False,
+            "message": "Invalid request ❌"
+        }), 400
 
     first = data.get("first_name")
     last = data.get("last_name")
@@ -326,36 +337,70 @@ def signup():
     password = data.get("password")
 
     if not all([first, last, email, password]):
-        return jsonify({"success": False, "message": "All fields required ❌"}), 400
+        return jsonify({
+            "success": False,
+            "message": "All fields required ❌"
+        }), 400
 
     email = email.lower().strip()
-    hashed_pw = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    # 🔐 Hash password
+    hashed_pw = bcrypt.generate_password_hash(
+        password
+    ).decode("utf-8")
+
+    # 📅 Account Created Date
+    created_at = datetime.now().strftime(
+        "%d %b %Y"
+    )
+
+    # 🆔 Auto Generate Account ID
+    account_id = "CRP-" + \
+        str(uuid.uuid4())[:8].upper()
 
     conn = get_db()
     cursor = conn.cursor()
 
     try:
-        cursor.execute(
-            "INSERT INTO signup(first_name,last_name,email) VALUES(?,?,?)",
-            (first, last, email)
-        )
 
-        cursor.execute(
-            "INSERT INTO login(email,password) VALUES(?,?)",
-            (email, hashed_pw)
-        )
+        # 👉 Insert into signup table
+        cursor.execute("""
+            INSERT INTO signup
+            (first_name, last_name, email,
+             account_id, created_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            first,
+            last,
+            email,
+            account_id,
+            created_at
+        ))
+
+        # 👉 Insert into login table
+        cursor.execute("""
+            INSERT INTO login
+            (email, password)
+            VALUES (?, ?)
+        """, (
+            email,
+            hashed_pw
+        ))
 
         conn.commit()
 
         return jsonify({
             "success": True,
-            "message": "Signup successful ✅ Please login"
+            "message":
+            "Signup successful ✅ Please login"
         })
 
     except sqlite3.IntegrityError:
+
         return jsonify({
             "success": False,
-            "message": "Email already exists ❌"
+            "message":
+            "Email already exists ❌"
         })
 
     finally:
@@ -767,6 +812,24 @@ def book_car():
     conn = get_db()
     cursor = conn.cursor()
 
+    cursor.execute("""
+    UPDATE bookings
+    SET booking_status='Ongoing'
+    WHERE pickup_datetime <= datetime('now')
+    AND drop_datetime > datetime('now')
+    AND booking_status='Confirmed'
+""")
+
+    cursor.execute("""
+    UPDATE bookings
+    SET booking_status='Completed'
+    WHERE drop_datetime <= datetime('now')
+    AND booking_status IN ('Confirmed','Ongoing')
+""")
+
+    conn.commit()
+
+
     try:
 
         customer_email = data.get("customer_email")
@@ -825,25 +888,6 @@ def book_car():
                 "message": "You cannot book your own car ❌"
             }),400
 
-
-        # 🔥 PREVENT TOO MANY ACTIVE BOOKINGS (SMART PROTECTION)
-        cursor.execute("""
-        SELECT COUNT(*) as total
-        FROM bookings
-        WHERE customer_email=?
-        AND booking_status='Confirmed'
-        """,(customer_email,))
-
-        result = cursor.fetchone()
-        active = result["total"] if result else 0   
-
-        if active >= 2:
-            return jsonify({
-                "success":False,
-                "message":"Booking limit reached (Max 2 active) ❌"
-            }),400
-
-
         # 🔥 DATE CONFLICT CHECK (PRO LEVEL)
         pickup = data.get("pickup_datetime")
         drop = data.get("drop_datetime")
@@ -854,6 +898,21 @@ def book_car():
                 "message":"Pickup & Drop required ❌"
             }),400
 
+        cursor.execute("""
+        SELECT 1 FROM bookings
+        WHERE car_id=?
+        AND booking_status IN ('Confirmed','Ongoing')
+        AND (
+            pickup_datetime < ?
+            AND drop_datetime > ?
+        )
+        """,(car_id, drop, pickup))
+
+        if cursor.fetchone():
+            return jsonify({
+                "success":False,
+                "message":"Car already booked for selected time ❌"
+            }),400
 
         cursor.execute("""
         SELECT * FROM bookings
@@ -871,6 +930,23 @@ def book_car():
             return jsonify({
                 "success":False,
                 "message":"Car already booked for selected dates ❌"
+            }),400
+        
+        # ✅ BONUS — USER OVERLAP CHECK (VERY IMPRESSIVE FEATURE)
+        cursor.execute("""
+        SELECT 1 FROM bookings
+        WHERE customer_email=?
+        AND booking_status IN ('Confirmed','Ongoing')
+        AND (
+            pickup_datetime < ?
+            AND drop_datetime > ?
+        )
+        """,(customer_email, drop, pickup))
+
+        if cursor.fetchone():
+            return jsonify({
+                "success":False,
+                "message":"You already have a booking during this time ❌"
             }),400
         
         # SAFE TYPE CONVERSION
@@ -1199,9 +1275,101 @@ def my_selling_status(email):
         "cars":cars
     })
 
+# ==============================
+# GET PROFILE IMAGE
+# ==============================
+@app.route("/get-profile-image/<email>")
+def get_profile_img(email):
 
+    conn = sqlite3.connect("login.db")
+    cursor = conn.cursor()
 
+    cursor.execute(
+        "SELECT profile_img FROM signup WHERE email=?",
+        (email,)
+    )
 
+    row = cursor.fetchone()
+    conn.close()
+
+    if row and row[0]:
+        return jsonify({
+            "success": True,
+            "image": row[0]
+        })
+
+    return jsonify({
+        "success": False
+    })
+
+# ==============================
+# UPLOAD PROFILE IMAGE
+# ==============================
+
+@app.route("/upload-profile-image", methods=["POST"])
+def upload_profile_img():
+
+    data = request.json
+    email = data.get("email")
+    image = data.get("image")
+
+    conn = sqlite3.connect("login.db")
+    cur = conn.cursor()
+
+    cur.execute("""
+        UPDATE signup
+        SET profile_img = ?
+        WHERE email = ?
+    """, (image, email))
+
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": True})
+
+# ==============================
+# GET FULL PROFILE
+# ==============================
+@app.route("/get-profile/<email>", methods=["GET"])
+def get_profile(email):
+
+    try:
+        conn = sqlite3.connect("login.db")
+        conn.row_factory = sqlite3.Row   # 🔥 Important
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT
+                first_name,
+                last_name,
+                email,
+                phone,
+                account_id,
+                created_at,
+                profile_img
+            FROM signup
+            WHERE email = ?
+        """, (email.lower().strip(),))
+
+        row = cur.fetchone()
+        conn.close()
+
+        if not row:
+            return jsonify({
+                "success": False,
+                "message": "User not found ❌"
+            })
+
+        return jsonify({
+            "success": True,
+            "profile": dict(row)   # 🔥 Cleaner JSON
+        })
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "message": str(e)
+        })
 
 # -----------------------------
 # RUN SERVER

@@ -179,6 +179,79 @@
       color: #aaa;
       font-size: 13px;
     }
+    /* ⭐ PROFILE MENU CONTAINER */
+.profile-menu{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+
+/* ⭐ PROFILE ICON */
+.profile-icon{
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #3a3558;
+  transition: 0.2s;
+}
+
+/* Hover Effect */
+.profile-icon:hover{
+  border-color: #9b7cff;
+  transform: scale(1.05);
+}
+
+
+/* ⭐ DROPDOWN BOX */
+.profile-dropdown{
+  position: absolute;
+  right: 0;
+  top: 52px;
+  width: 190px;
+
+  background: #1c1830;
+  border: 1px solid #2a2545;
+  border-radius: 14px;
+
+  box-shadow: 0 15px 40px rgba(0,0,0,0.45);
+
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 999;
+}
+
+
+/* ⭐ DROPDOWN LINKS */
+.profile-dropdown a{
+  padding: 12px 14px;
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+
+/* Hover */
+.profile-dropdown a:hover{
+  background: #2a2545;
+}
+
+
+/* Divider line */
+.profile-dropdown hr{
+  border: none;
+  border-top: 1px solid #2a2545;
+}
+
+
+/* Logout highlight */
+.logout-btn{
+  color: #ff6b6b;
+}
+
   </style>
 </head>
 
@@ -232,7 +305,33 @@
       <a href="../service/contact.html">Contact</a>
 
       <!-- ✅ 7) Logout -->
-      <a href="#" onclick="logout()">Logout</a>
+       <!-- ⭐ PROFILE DROPDOWN MENU -->
+       <div class="profile-menu">
+
+  <!-- Profile Icon -->
+  <img id="navProfileImg"
+       src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+       alt="Profile"
+       class="profile-icon"
+       onclick="toggleProfileMenu()">
+
+  <!-- Dropdown Options -->
+  <div class="profile-dropdown" id="profileDropdown">
+
+    <a href="../home/home.html">Dashboard</a>
+
+    <a href="../home/profile.html">Profile</a>
+
+    <a href="../service/Customer support/customer-support.html">Help Center</a>
+
+    <hr>
+
+    <a href="#" class="logout-btn" onclick="logout()">
+      Logout
+    </a>
+
+  </div>
+</div>
     </nav>
   </header>
 
@@ -275,6 +374,41 @@ if (!user || !user.email) {
   window.location.href = "../login/login.html";
 }
 
+// ================= LOAD NAVBAR PROFILE IMAGE =================
+
+const navImg =
+  document.getElementById("navProfileImg");
+
+if(user && user.profile_img){
+
+  navImg.src = user.profile_img;
+
+}
+async function loadProfileImage(){
+
+  try{
+
+    const res =
+      await fetch(
+        `http://127.0.0.1:3000/get-profile-image/${user.email}`
+      );
+
+    const data = await res.json();
+
+    if(data.success){
+
+      document.getElementById("navProfileImg").src =
+        data.image;
+
+    }
+
+  }catch(err){
+    console.log("Image load error", err);
+  }
+
+}
+
+loadProfileImage();
 
 
 // ✅ LOGOUT
@@ -432,9 +566,75 @@ async function loadApprovalStatus() {
 
 }
 
+// ⭐ PROFILE DROPDOWN TOGGLE
+function toggleProfileMenu(){
 
+  const menu =
+    document.getElementById("profileDropdown");
+
+  if(menu.style.display === "flex"){
+    menu.style.display = "none";
+  }
+  else{
+    menu.style.display = "flex";
+  }
+
+}
+
+
+// ⭐ CLOSE WHEN CLICK OUTSIDE
+window.addEventListener("click", function(e){
+
+  const menu =
+    document.getElementById("profileDropdown");
+
+  const icon =
+    document.querySelector(".profile-icon");
+
+  if(!icon.contains(e.target) &&
+     !menu.contains(e.target)){
+
+    menu.style.display = "none";
+  }
+
+});
 
 loadApprovalStatus();
+// ===============================
+// LOAD PROFILE IMAGE IN NAVBAR
+// ===============================
+
+async function loadNavProfileImage(){
+
+  const user =
+    JSON.parse(localStorage.getItem("car_rental_user"));
+
+  if(!user) return;
+
+  try{
+
+    const res = await fetch(
+      `http://127.0.0.1:3000/get-profile/${user.email}`
+    );
+
+    const data = await res.json();
+
+    if(data.success && data.image){
+
+      document.getElementById("navProfileImg").src =
+        data.image;
+
+    }
+
+  }
+  catch(err){
+    console.log("Profile load error", err);
+  }
+
+}
+
+// Run
+loadNavProfileImage();
 
 </script>
 
