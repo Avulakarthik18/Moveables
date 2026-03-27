@@ -422,7 +422,7 @@ async function loadApprovedCars() {
 
         // ✅ CALL YOUR EXISTING BACKEND
         const url =
-        `http://127.0.0.1:3000/approved-cars/${
+        `/api/approved-cars/${
             encodeURIComponent(email)
         }/${
             encodeURIComponent(listingType)

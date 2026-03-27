@@ -1,0 +1,9 @@
+.git
+__pycache__
+*.db
+.env
+Dockerfile
+docker-compose.yml
+README.md
+RESEARCH_PAPER.md
+node_modules

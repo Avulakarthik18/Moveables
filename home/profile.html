@@ -391,7 +391,7 @@
 
 <script>
 
-const API_BASE = "http://127.0.0.1:3000";
+const API_BASE = "/api";
 
 // USER DATA
 const user =
@@ -503,7 +503,7 @@ document
    try{
 
      const res = await fetch(
-       "http://127.0.0.1:3000/upload-profile-image",
+       "/api/upload-profile-image",
        {
          method:"POST",
          headers:{
@@ -544,7 +544,7 @@ async function loadProfileImage(){
  try{
 
    const res = await fetch(
-     `http://127.0.0.1:3000/get-profile-image/${user.email}`
+     `/api/get-profile-image/${user.email}`
    );
 
    const data = await res.json();

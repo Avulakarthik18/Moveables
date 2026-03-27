@@ -16,7 +16,7 @@
 (function initRoadMindWidget() {
 
     // ── CHANGE THIS to your backend URL if different ──────────────────────
-    const BACKEND_URL = "http://127.0.0.1:3000";
+    const BACKEND_URL = "/api";
 
     // ── HTML template for the widget ─────────────────────────────────────
     const widgetHTML = `

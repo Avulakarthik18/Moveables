@@ -258,7 +258,7 @@
   </div>
 
   <script>
-    const API_BASE = "http://127.0.0.1:3000";
+    const API_BASE = "/api";
 
     // ✅ Only logged users
     const user = JSON.parse(localStorage.getItem("car_rental_user"));
@@ -333,7 +333,7 @@
 
     async function loadStatus(){
       try{
-        const res = await fetch(`http://127.0.0.1:3000/my-car-status/${user.email}`);
+        const res = await fetch(`/api/my-car-status/${user.email}`);
         const data = await res.json();
 
         if(!data.success){

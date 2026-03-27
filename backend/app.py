@@ -1,3 +1,10 @@
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass
+
 from flask import Flask, request, jsonify
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
@@ -13,18 +20,20 @@ from email.message import EmailMessage
 import razorpay
 import json
 import os
+from dotenv import load_dotenv
 
 import google.generativeai as genai
 import uuid as uuid_lib
 import sys, os
+
+# Load environment variables from .env file
+load_dotenv()
+
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ai_assistant.rag.retriever import search_knowledge
 
-GEMINI_API_KEY = "AIzaSyDT9cCkLw4RdNmc73F9L0HJJMrMWtuRESM"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "fallback_key_if_needed")
 genai.configure(api_key=GEMINI_API_KEY)
-
-
-
 
 
 app = Flask(__name__)
@@ -33,24 +42,24 @@ CORS(app)
 bcrypt = Bcrypt(app)
 
 
-DATABASE_URL = "postgresql://postgres.pxnangovncbvfbjywnbv:omSriganesha06@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres"
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine)
 
 
 
-# 🔥 CHANGE THIS (KEEP SECRET)
-ADMIN_SECRET = "supersecret123"
+# 🔥 SECRETS (Loaded from .env)
+ADMIN_SECRET = os.getenv("ADMIN_SECRET", "supersecret123")
 
-# ⭐ RAZORPAY TEST KEYS (User should replace these with their own)
-RAZORPAY_KEY_ID = "rzp_test_SPSadFsryQESjl"
-RAZORPAY_KEY_SECRET = "bBYj7Q4dZGnRnf6CzFLZftIO"
+# ⭐ RAZORPAY KEYS
+RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
 
-EMAIL_USER = "avulakarthik189@gmail.com"
-EMAIL_PASS = "pcjs qbdf cyvk czyc"
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
 # -----------------------------
 # DATABASE CONNECTION
 # -----------------------------
@@ -980,7 +989,10 @@ def approved_cars(email, listing_type):
 
     with engine.begin() as conn:
         result = conn.execute(text("""
-            SELECT *
+            SELECT 
+                id, owner_email, listing_type, company, model, 
+                year, fuel, transmission, seats, km, 
+                location, price_month, images
             FROM cars
             WHERE status='Approved'
             AND LOWER(owner_email) != LOWER(:email)

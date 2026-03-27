@@ -37,12 +37,14 @@ def after_request(response):
 # ============================================
 # 📦 LOAD MODEL + ENCODERS
 # ============================================
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-model = joblib.load("ui_price_model.pkl")
-encoders = joblib.load("ui_encoders.pkl")
+model = joblib.load(os.path.join(BASE_DIR, "ui_price_model.pkl"))
+encoders = joblib.load(os.path.join(BASE_DIR, "ui_encoders.pkl"))
 
 # Use SAME dataset used in training
-df = pd.read_csv("final_car_dataset.csv")
+df = pd.read_csv(os.path.join(BASE_DIR, "final_car_dataset.csv"))
 
 
 # ============================================
