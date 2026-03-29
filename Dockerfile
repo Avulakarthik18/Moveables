@@ -5,8 +5,12 @@ FROM python:3.9-slim
 RUN apt-get update && apt-get install -y \
     nginx \
     build-essential \
+    g++ \
     python3-dev \
-    && rm -rf /lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
+
+# Optimize building hnswlib for multi-architecture compatibility
+ENV HNSWLIB_NO_NATIVE=1
 
 # Set working directory
 WORKDIR /app
