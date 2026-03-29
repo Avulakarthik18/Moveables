@@ -2,7 +2,7 @@ services:
   - type: web
     name: car-rental-pro
     runtime: docker
-    plan: free
+    plan: free # or 'starter' if memory is an issue
     region: ohio
     envVars:
       - key: PORT
@@ -10,7 +10,3 @@ services:
       - key: PYTHON_VERSION
         value: 3.9
     healthCheckPath: /
-    instanceContext:
-      # Memory limit optimization for free tier
-      numWorkers: 1
-      timeout: 300
