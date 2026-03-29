@@ -24,16 +24,23 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Configure Nginx to serve static files from /app
 RUN sed -i 's|root /usr/share/nginx/html;|root /app;|g' /etc/nginx/conf.d/default.conf
 
-# Create a startup script to run both Nginx and both Gunicorn (Backend + ML)
-RUN echo "#!/bin/bash\n\
+# Create a startup script to support Render/Railway dynamic PORT and large AI models
+RUN printf "#!/bin/bash\n\
+set -e\n\
+# Dynamically replace the port 8080 in nginx config with the \$PORT variable provided at runtime\n\
+sed -i \"s/listen 8080;/listen \${PORT:-8080};/g\" /etc/nginx/conf.d/default.conf\n\
+\n\
 nginx\n\
-gunicorn -w 2 --chdir /app/backend -b 127.0.0.1:5000 app:app &\n\
-gunicorn -w 2 --chdir /app/sell_buy -b 127.0.0.1:5002 ml_api:app\n\
-" > /app/start.sh
+\n\
+# Use 1 worker each to keep memory usage under 512MB RAM\n\
+# Use 300s timeout to allow the large 368MB AI model to load without being killed\n\
+# Backend on 5000, ML API on 5002\n\
+gunicorn -w 1 --timeout 300 --chdir /app/backend -b 127.0.0.1:5000 app:app &\n\
+gunicorn -w 1 --timeout 300 --chdir /app/sell_buy -b 127.0.0.1:5002 ml_api:app\n" > /app/start.sh
 
 RUN chmod +x /app/start.sh
 
-# Expose port 8080 (Matches Nginx config)
+# Expose port 8080 (though Render will override this with its own PORT)
 EXPOSE 8080
 
 # Start with our script

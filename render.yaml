@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: car-rental-pro
+    runtime: docker
+    plan: free
+    region: ohio
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: PYTHON_VERSION
+        value: 3.9
+    healthCheckPath: /
+    instanceContext:
+      # Memory limit optimization for free tier
+      numWorkers: 1
+      timeout: 300
