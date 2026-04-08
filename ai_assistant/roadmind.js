@@ -239,6 +239,7 @@
     // ── Load history on startup ───────────────────────────────────────────
     function loadExistingMessages() {
         if (!messagesContainer) return;
+
         if (chatHistory.length > 0) {
             messagesContainer.innerHTML = '';
             for (let msg of chatHistory) {
@@ -253,6 +254,10 @@
                 messagesContainer.appendChild(msgWrapper);
             }
             scrollToBottom();
+        } else {
+            // Fresh user — inject greeting options
+            const welcomeMsg = "👋 **Hi! I'm RoadMind AI.**\n\nNot sure what to type? Try one of these quick commands:\n🚗 **'book a car'**\n📦 **'send a parcel'**\n💰 **'price estimate'**\n📋 **'my bookings'**\n🚙 **'my listings'**\n\nHow can I help you today?";
+            addMessage(welcomeMsg, 'ai');
         }
     }
 

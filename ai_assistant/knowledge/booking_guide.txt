@@ -1,0 +1,55 @@
+CarRentalPro — Car Booking Guide (RoadMind AI Knowledge Base)
+
+HOW TO BOOK A CAR ON CARRENTAL PRO:
+
+Step 1: Login to your account.
+Step 2: Go to the Home page and click "Book a Car" or browse the car listings.
+Step 3: You will be asked to choose your booking type:
+  - "Rental Only" — You drive the car yourself. No driver provided.
+  - "With Driver" — A professional driver is assigned by CarRentalPro and drives for you.
+
+RENTAL ONLY BOOKING:
+- Choose a car from available listings.
+- Enter your pickup location, drop location, pickup date and time, drop date and time.
+- Provide your driving license details.
+- You can optionally add a nominee driver (another person allowed to drive the car).
+- Pay the rental fee plus a security deposit during checkout.
+- You will receive a booking confirmation email with all details.
+- The security deposit is refunded within 24 hours after dropping off the car in good condition.
+- Any damage to the car during the rental will be deducted from the security deposit.
+
+WITH DRIVER BOOKING:
+- Choose a car that supports "With Driver" mode.
+- Enter your pickup and drop locations on the interactive map.
+- The fare is calculated at approximately ₹15 per km. The exact price is generated on the booking map based on your actual route.
+- Do NOT ask for a per-day price for With Driver bookings — the price depends on the route distance.
+- After booking, a driver from CarRentalPro's approved driver pool will be assigned.
+- You will receive the driver's name and mobile number via email before pickup.
+- If no driver is immediately available, the booking goes to "Pending Platform Driver" status and an admin manually assigns one.
+
+BOOKING STATUSES:
+- Pending: Booking created, awaiting payment.
+- Confirmed: Booking is confirmed and paid. Driver assigned (if applicable).
+- Pending Platform Driver: Waiting for admin to assign a driver (for With Driver bookings).
+- Ongoing: Trip is currently in progress.
+- Completed: Trip is finished.
+- Cancelled: Booking was cancelled by the user or admin.
+
+KEY THINGS TO KNOW ABOUT BOOKING:
+- Users must be logged in to book a car.
+- Pickup and drop locations must be provided.
+- Payment is handled securely via Razorpay.
+- Users can view all their bookings under "My Bookings" in the customer section.
+- Bookings can be cancelled up to 24 hours before pickup for a full refund.
+- Cancellations within 24 hours incur a 20% fee.
+- No-shows are charged the full amount.
+
+HOW TO VIEW YOUR BOOKINGS:
+- Go to the Customer section and click "My Bookings".
+- You can see all your past and upcoming bookings with full details.
+- Live tracking of your driver is available during an active trip on the "Live Track" page.
+
+LIVE TRACKING:
+- Once a trip starts, you can see the driver's live location on a map.
+- Go to Customer > Live Track to use this feature.
+- The map updates in real-time as the driver moves.

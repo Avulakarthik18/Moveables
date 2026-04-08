@@ -1,26 +1,74 @@
 Platform Policies for CarRentalPro (RoadMind AI Knowledge Base)
 
-1. Cancellation Policy:
+1. CANCELLATION POLICY:
 - Users can cancel their bookings up to 24 hours before pickup for a full refund.
 - Cancellations within 24 hours of pickup will incur a 20% penalty fee.
 - No-shows without cancellation will be charged the full amount.
+- Luxury vehicle bookings require 48 hours advance cancellation for a full refund.
+- To cancel a booking: Go to Customer > My Bookings > Select Booking > Cancel.
 
-2. Driver / Nominee Policy:
+2. DRIVER / NOMINEE POLICY:
 - In "With Driver" bookings, the driver is assigned by CarRentalPro and their details are shared via email before pickup.
-- In "Rental Only", the person who booked the car must be the primary driver and provide driving license details. They can add a nominee driver, but must be present at pickup.
+- In "Rental Only", the person who booked the car must be the primary driver and provide driving license details.
+- They can add a nominee driver (another person allowed to drive the car), but must be present at pickup.
+- The nominee driver's license details must be provided at the time of booking.
 
-3. Car Listings (Owners):
+3. CAR LISTINGS (OWNERS):
 - Car owners can list their cars for rental or sale.
 - All listings must be approved by the Admin before they appear on the platform.
 - The Admin reviews verification documents like RC, insurance, and car photos.
+- Rejected listings can be corrected and resubmitted.
+- Owners can view listing status in Add Car > My Car Status.
 
-4. Parcel Delivery:
+4. PARCEL DELIVERY:
 - Users can request a parcel delivery by filling out sender and receiver details.
 - Drivers can accept or reject parcel requests.
-- Once accepted, the sender receives a 12-digit QR code.
+- Once accepted, the sender receives a 12-digit QR code via email.
+- To successfully pick up a parcel, the driver must verify the 12-digit code from the sender.
 - To successfully deliver a parcel, the driver must ask the receiver for a 4-digit OTP.
+- Prohibited items: illegal goods, flammable materials, weapons, live animals.
 
-5. Payment & Security:
+5. PAYMENT & SECURITY DEPOSIT:
 - Security deposits must be paid during booking for "Rental Only" cars.
 - Deposits are refunded within 24 hours of dropping off the car in good condition.
 - Any damages incurred during rental will be deducted from the security deposit.
+- Payments are processed via Razorpay (UPI, cards, net banking).
+
+6. DAMAGE POLICY:
+- Users are responsible for any damage to the rental car during their rental period.
+- Damage costs are assessed and deducted from the security deposit.
+- If damage cost exceeds the deposit, the user will be billed for the difference.
+- Pre-existing damages must be noted during car inspection at pickup.
+
+7. ACCOUNT POLICY:
+- One email address can only be registered once.
+- Users must be 18+ years of age to book a car.
+- A valid Indian driving license is required for all Rental Only bookings.
+- Accounts suspected of fraud will be suspended without notice.
+- Password can be reset via Login > Forgot Password using an OTP sent to registered email.
+
+8. INSURANCE POLICY:
+- CarRentalPro offers optional rental insurance coverage.
+- Basic coverage: Third-party liability (mandatory by law).
+- Premium coverage: Comprehensive damage coverage including own damage.
+- Insurance add-ons can be selected during the checkout process.
+- In case of an accident, file an FIR, inform the car owner, and contact support immediately.
+
+9. PRIVACY POLICY:
+- User data (name, email, address, license) is stored securely in an encrypted database.
+- CarRentalPro does not sell user data to third parties.
+- Payment data is handled exclusively by Razorpay and is never stored on CarRentalPro servers.
+- Users can request data deletion by contacting support.
+
+10. PLATFORM ROLES:
+- User/Renter: Books cars, sends parcels, buys cars.
+- Owner: Lists cars for rental or sale.
+- Driver: Accepts and completes trip and parcel assignments.
+- Admin: Manages all platform operations, approvals, and assignments.
+- Guest: Can browse listings but must log in to book, list, or send parcels.
+
+11. SERVICEABLE AREAS:
+- CarRentalPro is currently based in Hyderabad, Telangana, India.
+- Doorstep delivery is available in Hyderabad and select surrounding areas.
+- Outstation trips are supported; the route and distance determine the price.
+- Interstate trips are allowed but must be declared at the time of booking.

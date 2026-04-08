@@ -34,6 +34,24 @@ load_dotenv()
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ai_assistant.rag.retriever import search_knowledge
 
+# ── Layer 0: NLP Intent Router + ML Classifier ────────────────────────────
+try:
+    from ai_assistant.nlp.nlp_router import detect_intent, is_ml_intent
+    from ai_assistant.nlp.ml_classifier import (
+        get_next_question, parse_answer,
+        predict_car_category, predict_parcel_category,
+        build_result_message
+    )
+    NLP_LAYER_AVAILABLE = True
+    print("✅ NLP Layer 0 loaded successfully!")
+except Exception as _nlp_err:
+    NLP_LAYER_AVAILABLE = False
+    print(f"⚠️ NLP Layer 0 not loaded (will use Gemini only): {_nlp_err}")
+
+# ── In-memory session store for ML classifier flow states ─────────────────
+# Key: session_id  →  Value: {'flow_type': str, 'step': str, 'collected': dict}
+_ml_flow_sessions = {}
+
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "fallback_key_if_needed")
 genai.configure(api_key=GEMINI_API_KEY)
 
@@ -2352,7 +2370,7 @@ def get_live_car_listings(filters: dict) -> str:
     NOTE: Requires `engine` to be already defined in your app.py.
     """
     try:
-        conditions = ["status='Approved'"]
+        conditions = []
         params     = {}
 
         if filters.get("fuel"):
@@ -2377,7 +2395,7 @@ def get_live_car_listings(filters: dict) -> str:
             result = conn.execute(
                 text(f"""
                     SELECT company, model, year, fuel, transmission,
-                           seats, location, price_month, listing_type
+                           seats, location, price_month, listing_type, status
                     FROM cars
                     WHERE {where_clause}
                     ORDER BY price_month ASC
@@ -2390,18 +2408,25 @@ def get_live_car_listings(filters: dict) -> str:
         if not cars:
             return "No cars found matching those filters right now."
 
-        lines = ["Here are the available cars:\n"]
+        lines = ["Here are the cars currently in our database:\n"]
         for i, car in enumerate(cars, 1):
             if car['listing_type'] == 'With Driver':
                 price_str = "₹15/km"
             else:
                 daily_price = (car['price_month'] // 30) if car['price_month'] else 0
                 price_str = f"₹{daily_price:,}/day"
+                
+            status_note = ""
+            if car['status'] == "Pending":
+                status_note = " *(🕒 Pending Admin Approval)*"
+            elif car['status'] == "Approved":
+                status_note = " *(✅ Ready to Book)*"
+            elif car['status'] == "Rejected":
+                status_note = " *(❌ Rejected by Admin)*"
+
             lines.append(
-                f"{i}. {car['company']} {car['model']} ({car['year']}) — "
-                f"{car['fuel']}, {car['transmission']}, {car['seats']} seats | "
-                f"{price_str} | {car['listing_type']} | "
-                f"📍 {car['location']}"
+                f"{i}. **{car['company']} {car['model']} ({car['year']})** {status_note}\n"
+                f"   {car['fuel']} | {car['transmission']} | {car['seats']} seats | {price_str} | {car['listing_type']} | 📍 {car['location']}\n"
             )
         return "\n".join(lines)
 
@@ -2434,10 +2459,18 @@ def get_user_booking_info(email: str) -> str:
 
         lines = ["Your recent bookings:\n"]
         for b in bookings:
+            status_note = ""
+            if b['booking_status'] == "Pending Platform Driver":
+                status_note = " *(⚠️ Waiting for a driver to accept the trip)*"
+            elif b['booking_status'] == "Confirmed":
+                status_note = " *(✅ Driver assigned and ready!)*"
+            elif b['booking_status'] == "Pending":
+                status_note = " *(🕒 Payment processing or waiting for confirmation)*"
+
             lines.append(
-                f"• {b['car_name']} | {b['booking_status']} | "
-                f"{b['rental_type']} | ₹{b['total_cost']:,} | "
-                f"Pickup: {b['pickup_datetime']} → Drop: {b['drop_datetime']}"
+                f"• **{b['car_name']}** | Status: **{b['booking_status']}**{status_note}\n"
+                f"  Type: {b['rental_type']} | Cost: ₹{b['total_cost']:,}\n"
+                f"  Pickup: {b['pickup_datetime']} → Drop: {b['drop_datetime']}\n"
             )
         return "\n".join(lines)
 
@@ -2447,37 +2480,60 @@ def get_user_booking_info(email: str) -> str:
 
 
 def get_user_listing_status(email: str) -> str:
-    """Get car listing status for a logged-in owner.
-    NOTE: Requires `engine` to be already defined in your app.py."""
+    """Get car listing status for a logged-in owner across rental AND selling."""
     try:
         with engine.begin() as conn:
-            result = conn.execute(
+            rent_res = conn.execute(
                 text("""
                     SELECT company, model, year, listing_type,
                            status, price_month, created_at
                     FROM cars
                     WHERE LOWER(owner_email) = LOWER(:email)
-                    ORDER BY created_at DESC
-                    LIMIT 5
                 """),
                 {"email": email}
             )
-            listings = [dict(row) for row in result.mappings().all()]
+            rent_cars = [dict(row) for row in rent_res.mappings().all()]
+
+            sell_res = conn.execute(
+                text("""
+                    SELECT company, model, year, 'Selling' as listing_type,
+                           status, selling_price as price_month, created_at
+                    FROM selling
+                    WHERE LOWER(owner_email) = LOWER(:email)
+                """),
+                {"email": email}
+            )
+            sell_cars = [dict(row) for row in sell_res.mappings().all()]
+
+        listings = rent_cars + sell_cars
+        listings.sort(key=lambda x: x['created_at'], reverse=True)
+        listings = listings[:5] # Limit top 5 most recent across both
 
         if not listings:
             return "You haven't listed any cars yet."
 
-        lines = ["Your car listings:\n"]
+        lines = ["Your recent platform listings:\n"]
         for l in listings:
             if l['listing_type'] == 'With Driver':
-                price_str = "₹15/km"
+                price_str = "Rental: ₹15/km"
+            elif l['listing_type'] == 'Selling':
+                price_str = f"Selling Price: ₹{l['price_month']:,}"
             else:
                 daily_price = (l['price_month'] // 30) if l['price_month'] else 0
-                price_str = f"₹{daily_price:,}/day"
+                price_str = f"Rental: ₹{daily_price:,}/day"
+            
+            status_note = ""
+            if l['status'] == "Pending":
+                status_note = " *(🕒 Under review by Admin. Usually takes 24hrs)*"
+            elif l['status'] == "Approved":
+                status_note = " *(✅ Live on platform!)*"
+            elif l['status'] == "Rejected":
+                status_note = " *(❌ Rejected by Admin. Check docs and re-upload)*"
+
             lines.append(
-                f"• {l['company']} {l['model']} ({l['year']}) — "
-                f"{l['listing_type']} | Status: {l['status']} | "
-                f"{price_str}"
+                f"• **{l['company']} {l['model']} ({l['year']})**\n"
+                f"  Status: **{l['status']}**{status_note}\n"
+                f"  Type: {l['listing_type']} | {price_str}\n"
             )
         return "\n".join(lines)
 
@@ -2509,14 +2565,62 @@ def get_sell_listing_status(email: str) -> str:
 
         lines = ["Your sell listings:\n"]
         for l in listings:
+            status_note = ""
+            if l['status'] == "Pending":
+                status_note = " *(🕒 Under review by Admin)*"
+            elif l['status'] == "Approved":
+                status_note = " *(✅ Live on Marketplace!)*"
+
             lines.append(
-                f"• {l['company']} {l['model']} ({l['year']}) — "
-                f"₹{l['selling_price']:,} | Status: {l['status']}"
+                f"• **{l['company']} {l['model']} ({l['year']})**\n"
+                f"  Status: **{l['status']}**{status_note} | Price: ₹{l['selling_price']:,}\n"
             )
         return "\n".join(lines)
 
     except Exception as e:
         print("Sell listing status error:", e)
+        return ""
+
+
+def get_user_parcel_status(email: str) -> str:
+    """Get parcel tracking status for a logged-in sender."""
+    try:
+        with engine.begin() as conn:
+            result = conn.execute(
+                text("""
+                    SELECT item_description, weight, receiver_name, 
+                           status, created_at, pickup_address, drop_address
+                    FROM parcels
+                    WHERE LOWER(sender_email) = LOWER(:email)
+                    ORDER BY created_at DESC
+                    LIMIT 3
+                """),
+                {"email": email}
+            )
+            parcels = [dict(row) for row in result.mappings().all()]
+
+        if not parcels:
+            return "You haven't sent any parcels yet."
+
+        lines = ["Your recent parcel shipments:\n"]
+        for p in parcels:
+            status_note = ""
+            if p['status'] == "Pending":
+                status_note = " *(🕒 Waiting for a driver to accept the parcel)*"
+            elif p['status'] == "Accepted":
+                status_note = " *(🚚 Driver assigned — ready for pickup!)*"
+            elif p['status'] == "Delivered":
+                status_note = " *(✅ Delivered successfully!)*"
+
+            lines.append(
+                f"• **{p['item_description']} ({p['weight']}kg)** to {p['receiver_name']}\n"
+                f"  Status: **{p['status']}**{status_note}\n"
+                f"  Route: {p['pickup_address']} → {p['drop_address']}\n"
+            )
+        return "\n".join(lines)
+
+    except Exception as e:
+        print("User parcel status error:", e)
         return ""
 
 
@@ -2558,6 +2662,12 @@ Question: {question}
         return category if category in valid else "general"
 
     except:
+        # Offline Fallback Regex
+        q = question.lower()
+        if any(w in q for w in ["my book", "my past", "my trip", "status of my"]): return "my_bookings"
+        if any(w in q for w in ["my list", "my car", "approval", "admin approv", "renting out"]): return "my_listings"
+        if any(w in q for w in ["sell", "my sell", "selling my"]): return "my_sell_listings"
+        if any(w in q for w in ["my parcel", "my deliver", "parcel status", "track my"]): return "my_parcels"
         return "general"
 
 
@@ -2639,6 +2749,136 @@ def register_roadmind_routes(app, engine):
         if not user_message:
             return jsonify({"success": False, "message": "Empty"}), 400
 
+        # ══════════════════════════════════════════════════════════════
+        # LAYER 0: NLP INTENT ROUTER + ML CLASSIFIER FLOW
+        # Intercepts structured intents (book_car, send_parcel) and
+        # runs a guided multi-turn Q&A before Gemini is invoked.
+        # Falls through to Layer 1-2-3 for all general questions.
+        # ══════════════════════════════════════════════════════════════
+        if NLP_LAYER_AVAILABLE:
+            # Check if there is an active ML flow for this session
+            active_flow = _ml_flow_sessions.get(session_id)
+
+            if active_flow:
+                # ── We are mid-flow: process the user's answer ──────
+                flow_type    = active_flow["flow_type"]
+                pending_key  = active_flow["pending_key"]
+                collected    = active_flow["collected"]
+
+                # Handle cancel/exit at any point
+                if any(w in user_message.lower() for w in ["cancel", "stop", "exit", "nevermind", "never mind", "quit"]):
+                    del _ml_flow_sessions[session_id]
+                    return jsonify({
+                        "success":   True,
+                        "reply":     "No worries! I've cancelled that. What else can I help you with? 😊",
+                        "sessionId": session_id
+                    })
+
+                # Parse and store the answer
+                parsed_val = parse_answer(flow_type, pending_key, user_message)
+                if parsed_val is not None:
+                    collected[pending_key] = parsed_val
+                else:
+                    # Could not parse — ask again
+                    return jsonify({
+                        "success":   True,
+                        "reply":     "Hmm, I didn't quite get that 😅 Could you rephrase or pick one of the options?",
+                        "sessionId": session_id
+                    })
+
+                # Check if there are more questions
+                next_q = get_next_question(flow_type, collected)
+                if next_q:
+                    active_flow["pending_key"] = next_q["key"]
+                    _ml_flow_sessions[session_id] = active_flow
+                    return jsonify({
+                        "success":   True,
+                        "reply":     next_q["question"],
+                        "sessionId": session_id
+                    })
+                else:
+                    # All answers collected — run prediction
+                    if flow_type == "book_car":
+                        category = predict_car_category(collected)
+                        result_msg = build_result_message(flow_type, category)
+
+                        # Fetch Live Cars to show the user based on ML prediction
+                        filters = {}
+                        if "Economy" in category:
+                            filters["max_price"] = 45000
+                            filters["listing_type"] = "Rental Only"
+                        elif "Standard" in category and "Driver" not in category:
+                            filters["max_price"] = 75000
+                            filters["listing_type"] = "Rental Only"
+                        elif "Premium" in category:
+                            filters["listing_type"] = "Rental Only"
+                        elif "With Driver" in category or "Luxury" in category:
+                            filters["listing_type"] = "With Driver"
+
+                        live_cars = get_live_car_listings(filters)
+                        if live_cars and "No cars found" not in live_cars:
+                            result_msg += "\n\n" + live_cars
+                        else:
+                            result_msg += "\n\n*(Hmm, no cars are available in this exact tier right now, but check the Home Page for others!)*"
+
+                    else:
+                        category = predict_parcel_category(collected)
+                        result_msg = build_result_message(flow_type, category)
+
+                    # Clean up flow state
+                    del _ml_flow_sessions[session_id]
+
+                    # Save to DB
+                    try:
+                        with engine.begin() as conn:
+                            conn.execute(text("""
+                                INSERT INTO ai_chats (email, role, session_id, sender, message)
+                                VALUES (:email, :role, :session_id, 'user', :message)
+                            """), {"email": email, "role": user_role, "session_id": session_id, "message": user_message})
+                            conn.execute(text("""
+                                INSERT INTO ai_chats (email, role, session_id, sender, message)
+                                VALUES (:email, :role, :session_id, 'ai', :message)
+                            """), {"email": email, "role": user_role, "session_id": session_id, "message": result_msg})
+                    except Exception as _db_err:
+                        print("ML flow DB save error:", _db_err)
+
+                    return jsonify({
+                        "success":   True,
+                        "reply":     result_msg,
+                        "sessionId": session_id
+                    })
+
+            else:
+                # ── No active flow: detect intent from fresh message ─
+                intent = detect_intent(user_message)
+                print(f"[RoadMind Layer 0] Intent detected: {intent}")
+
+                if is_ml_intent(intent):
+                    # Map intent → flow type
+                    flow_type = "send_parcel" if intent in ("send_parcel", "parcel_classifier") else "book_car"
+
+                    # Get first question
+                    first_q = get_next_question(flow_type, {})
+                    if first_q:
+                        _ml_flow_sessions[session_id] = {
+                            "flow_type":   flow_type,
+                            "pending_key": first_q["key"],
+                            "collected":   {}
+                        }
+
+                        intro = (
+                            "Sure! Let me help you find the right car rental. I'll ask you a few quick questions 🚗\n\n"
+                            if flow_type == "book_car" else
+                            "Of course! Let me assess your parcel needs. A few quick questions 📦\n\n"
+                        )
+
+                        return jsonify({
+                            "success":   True,
+                            "reply":     intro + first_q["question"],
+                            "sessionId": session_id
+                        })
+                # else: general intent — fall through to Layer 1 below
+
         # ── LAYER 1: Live database context ────────────────────────────
         db_context    = ""
         question_type = classify_question(user_message, user_role)
@@ -2655,6 +2895,9 @@ def register_roadmind_routes(app, engine):
 
         elif question_type == "my_sell_listings" and email:
             db_context = get_sell_listing_status(email)
+
+        elif question_type == "my_parcels" and email:
+            db_context = get_user_parcel_status(email)
 
         # ── LAYER 2: Knowledge base RAG ──────────────────────────────
         kb_context = ""
@@ -2773,9 +3016,26 @@ BOUNDARIES:
 
         except Exception as e:
             print("RoadMind Gemini error:", e)
+            fallback_reply = "Oops! It looks like my cloud AI brain is currently disconnected (API Issue). 🛑\n\n"
+            
+            # If we successfully fetched database info before crashing, SHOW IT!
+            if db_context:
+                fallback_reply += f"🟢 **However, I pulled this from the Database for you:**\n\n{db_context}\n\n---\n"
+            
+            fallback_reply += (
+                "Here is what I can still do for you offline:\n"
+                "🚗 **'book a car'** (Guided rental booking)\n"
+                "📦 **'send a parcel'** (Guided delivery setup)\n"
+                "💰 **'price estimate'** (Get ML car price checks)\n"
+                "📋 **'my bookings'** (Check your trips)\n"
+                "🚙 **'my listings'** (Check admin approvals)\n"
+                "🚚 **'track my parcel'** (Check delivery status)\n\n"
+                "Just type one of those, and we can get started right away!"
+            )
             return jsonify({
                 "success": True,
-                "reply": "Hmm something went wrong on my end — try again in a sec 🔄"
+                "reply": fallback_reply,
+                "sessionId": session_id
             })
 
 

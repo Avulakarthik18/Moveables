@@ -1,0 +1,60 @@
+CarRentalPro — Marketplace Guide: Buy & Sell Cars (RoadMind AI Knowledge Base)
+
+OVERVIEW:
+CarRentalPro has a built-in second-hand car marketplace where users can list their cars for sale and other users can browse and place bids to buy them.
+
+HOW TO SELL YOUR CAR:
+
+Step 1: Go to Sell/Buy > Sell My Car.
+Step 2: Fill in the car details:
+  - Car company (e.g., Maruti, Hyundai, Tata)
+  - Car model (e.g., Swift, i20, Nexon)
+  - Registration number (must be unique)
+  - Year of manufacture
+  - Fuel type (Petrol, Diesel, CNG, Electric)
+  - Transmission (Manual, Automatic)
+  - Kilometers driven
+  - Owner type (1st owner, 2nd owner, etc.)
+  - Location
+  - Description and photos
+Step 3: Use the AI Price Predictor to get a suggested selling price based on market data.
+  - The price predictor uses a trained Machine Learning model (Random Forest Regressor) trained on real Indian car data.
+  - Enter the car details and click "Predict Price" for an instant estimate.
+Step 4: Submit the listing for Admin approval.
+
+ADMIN APPROVAL FOR SELL LISTINGS:
+- All sell listings are reviewed by the admin before going live.
+- The admin checks for completeness, correct details, and appropriate pricing.
+- Once approved, your car listing becomes visible to buyers.
+- If rejected, you will need to correct the details and resubmit.
+
+HOW TO BUY A CAR:
+
+Step 1: Go to Sell/Buy > Buy a Car.
+Step 2: Browse available approved car listings.
+Step 3: Click on a listing and place a bid (your offered price).
+Step 4: The seller reviews your bid and can Accept or Reject it.
+Step 5: If accepted, you proceed to payment via Razorpay.
+
+BID AND OFFER SYSTEM:
+- Buyers place an "offered price" which can be different from the seller's asking price.
+- This starts a negotiation. Sellers can accept, reject, or ignore a bid.
+- If a bid is accepted, the buyer must complete payment to finalize the purchase.
+- The status of bids can be tracked in "My Bids" (buyer) or "My Sell Status" (seller).
+
+CHECKING YOUR LISTING STATUS:
+- Sellers can go to Sell/Buy > My Sell Status to see if their listing is Pending, Approved, or Rejected.
+- Buyers can go to Sell/Buy > My Buy Requests to see the status of their purchase requests.
+- Buyers can go to Sell/Buy > My Bids to see all their placed bids.
+
+AI PRICE PREDICTION:
+- The price predictor is powered by a scikit-learn Random Forest model.
+- It takes: company, model, year, kilometers, fuel type, transmission, owner type.
+- It returns an estimated fair market price in Indian Rupees (₹).
+- The prediction is an estimate and not guaranteed. Final price is negotiated between buyer and seller.
+
+KEY POLICIES:
+- Registration numbers must be unique. You cannot list the same car twice.
+- Only approved listings are visible to buyers.
+- Payments for car purchases, like rentals, go through Razorpay.
+- CarRentalPro does not act as an intermediary for vehicle transfer/registration — that is handled between buyer and seller directly.

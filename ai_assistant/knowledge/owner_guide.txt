@@ -1,0 +1,63 @@
+CarRentalPro — Car Owner Guide: Listing Cars for Rental (RoadMind AI Knowledge Base)
+
+OVERVIEW:
+Car owners (private vehicle owners) can register on CarRentalPro and list their cars either for:
+1. Rental Only — Renters drive the car themselves.
+2. Rental with Driver — The owner or a registered driver is attached to the car.
+
+HOW TO LIST A CAR FOR RENTAL:
+
+Step 1: Login to your account. Make sure you are registered as an owner.
+Step 2: Go to "Add Car" section.
+Step 3: Choose your listing type:
+  - "Rental Only" — Car will be rented without a driver.
+  - "With Driver" — Car comes with a registered driver.
+
+LISTING A RENTAL-ONLY CAR:
+Step 1: Go to Add Car > Add Car (Rental Only).
+Step 2: Fill in all required details:
+  - Car company, model, year
+  - Fuel type, transmission
+  - Registration number
+  - Number of seats
+  - Daily rental price (₹ per day)
+  - Security deposit amount
+  - Pickup location
+  - Car photos
+  - Any special notes or conditions
+Step 3: Submit for Admin approval.
+Step 4: Admin reviews the listing. Once approved, your car appears in search results.
+
+LISTING A CAR WITH DRIVER:
+Step 1: Go to Add Car > Add Car with Driver.
+Step 2: Fill in the car details (same as above).
+Step 3: Additionally provide driver details:
+  - Driver's name and mobile
+  - Driver's license number and type
+  - Vehicle type the driver is registered for
+Step 4: The fare for "With Driver" mode is ₹15/km based on route distance (not per day).
+Step 5: Submit for Admin approval.
+
+MANAGING YOUR CAR LISTINGS:
+- Go to Add Car > My Car Status to see all your listed cars.
+- You can see if each listing is Pending, Approved, or Rejected.
+- Rejected listings will show the reason. Correct the details and resubmit.
+- Approved listings show when they are booked, by whom, and for which dates.
+
+IMPORTANT RULES FOR OWNERS:
+- All cars must have valid insurance and RC (Registration Certificate).
+- The admin may request photos of the car, insurance documents, and RC.
+- Do not list cars with expired insurance or registration.
+- Cars with active bookings cannot be removed from the platform.
+- If you want to take your car off the platform, ensure no active bookings exist first.
+- Owners are responsible for ensuring the car is clean, fueled, and ready for pickup.
+- Customers rate their experience — high ratings improve your listing visibility.
+
+PRICING TIPS FOR OWNERS:
+- Set a competitive daily price by checking similar cars in your area.
+- Use the platform's AI price predictor in the Sell section for market value reference.
+- Security deposits should be proportional to the car's value — typically 10-20% of the car's market value per booking.
+
+NOTIFICATIONS:
+- Owners receive email notifications when a new booking is made on their car.
+- When a booking is completed, the owner gets a summary with dates and total earned.

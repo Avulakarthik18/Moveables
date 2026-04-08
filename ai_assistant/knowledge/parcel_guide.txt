@@ -1,0 +1,66 @@
+CarRentalPro — Parcel Delivery Guide (RoadMind AI Knowledge Base)
+
+OVERVIEW:
+CarRentalPro offers a parcel delivery service where users can send parcels using CarRentalPro's network of approved drivers. Drivers pick up the parcel and deliver it to the receiver.
+
+HOW TO SEND A PARCEL:
+
+Step 1: Go to the Parcel section and click "Send Parcel".
+Step 2: Fill in the parcel request form:
+  - Pickup location (where the driver will collect the parcel from you)
+  - Drop location (where the parcel needs to be delivered)
+  - Parcel description (what is inside the parcel)
+  - Parcel weight (approximate weight in kg)
+  - Receiver's name
+  - Receiver's mobile number
+Step 3: Submit the parcel request.
+Step 4: Drivers on the platform will see your request and can Accept or Reject it.
+Step 5: Once a driver accepts, you will receive:
+  - A confirmation email
+  - A 12-digit verification QR code/code sent to your email
+Step 6: When the driver arrives at your location for pickup:
+  - Show the 12-digit pickup code or QR code to the driver.
+  - The driver scans/enters this to confirm they picked up the correct parcel.
+Step 7: The driver delivers the parcel to the receiver.
+Step 8: At the time of delivery, the receiver must provide a 4-digit OTP to the driver.
+  - This OTP is sent to the receiver's mobile number.
+  - The driver enters this OTP in their app to mark the delivery as complete.
+Step 9: You receive a delivery confirmation email once the parcel is delivered.
+
+PARCEL DELIVERY STATUS:
+- Pending: Parcel request submitted, waiting for a driver to accept.
+- Accepted: A driver has accepted your parcel request.
+- Picked Up: Driver has collected the parcel from your location (QR verified).
+- Delivered: Parcel successfully delivered to the receiver (OTP verified).
+- Rejected: No driver accepted within the window, or all drivers rejected.
+
+HOW TO TRACK YOUR PARCEL:
+- Go to the Parcel section and click "Track Parcel".
+- Enter your parcel details to see the current status.
+- You can see whether the parcel is Pending, Accepted, Picked Up, or Delivered.
+
+IMPORTANT THINGS TO KNOW:
+- The parcel service works through available CarRentalPro drivers who choose to accept requests.
+- If no driver accepts, the parcel status remains Pending.
+- You cannot cancel a parcel once a driver has accepted and picked it up.
+- CarRentalPro is not responsible for damaged goods. Pack fragile items carefully.
+- The 4-digit OTP protects against wrong-person delivery. The receiver MUST provide the OTP.
+- Without the OTP, the driver cannot mark the delivery as complete.
+- Parcel bookings are linked to driver trips — a driver may combine a rental with a parcel pickup if their route matches.
+
+WHAT ITEMS ARE ALLOWED:
+- Documents, files, and packages
+- Electronics (packed safely)
+- Clothing and personal items
+- Small household goods
+- Food items (perishable items must be clearly marked)
+
+WHAT IS NOT ALLOWED:
+- Illegal items, narcotics, weapons
+- Flammable or hazardous materials
+- Live animals
+- Extremely heavy or oversized items (contact support for special arrangements)
+
+SUPPORT FOR PARCEL ISSUES:
+- If there is a problem with your parcel delivery, contact CarRentalPro support via the Customer Support section.
+- Provide your parcel request ID and details for faster resolution.

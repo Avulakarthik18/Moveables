@@ -1,0 +1,64 @@
+CarRentalPro — Luxury Vehicles & Doorstep Delivery Guide (RoadMind AI Knowledge Base)
+
+LUXURY VEHICLES SERVICE:
+
+OVERVIEW:
+CarRentalPro offers a premium Luxury Vehicles service for customers who want a high-end driving experience. This includes luxury sedans and luxury SUVs with professional drivers.
+
+LUXURY SEDANS:
+- Available luxury sedans include premium models from brands like Mercedes-Benz, BMW, Audi, Toyota Camry, Skoda Superb, and equivalent upper-segment cars.
+- Luxury sedan bookings always include a professional driver — these are not self-drive.
+- Ideal for: Corporate travel, airport transfers, business meetings, weddings, special occasions.
+- How to book: Go to Services > Luxury Vehicles > Luxury Sedans.
+- Select your preferred sedan, enter pickup and drop location, and book.
+- Pricing is calculated per km (approximately ₹15-25/km depending on vehicle model).
+
+LUXURY SUVs:
+- Available luxury SUVs include premium models like Toyota Fortuner, Mahindra XUV700 (top trim), Hyundai Tucson, Kia Sorento, and equivalent.
+- Luxury SUV bookings also always include a professional driver — these are not self-drive.
+- Ideal for: Group travel, family outstation trips, offroad travel, VIP transfers.
+- How to book: Go to Services > Luxury Vehicles > Luxury SUVs.
+- Select your preferred SUV, enter pickup and drop location, and book.
+
+LUXURY VEHICLE GENERAL POLICIES:
+- All luxury bookings include a professional driver. No self-drive option.
+- Advance booking is recommended (at least 24-48 hours before pickup).
+- Cancellations for luxury bookings must be made 48 hours before pickup for a full refund.
+- Damage to luxury vehicles will incur a higher damage fee compared to standard cars.
+- Smoking is strictly not permitted in luxury vehicles.
+- Drinking alcohol inside the vehicle is not permitted.
+- Passengers are expected to maintain respectful conduct with the driver.
+
+
+DOORSTEP DELIVERY SERVICE:
+
+OVERVIEW:
+CarRentalPro's Doorstep Delivery service brings the rental car directly to your doorstep. Instead of going to a pickup point, the driver delivers the car to your home or office.
+
+HOW DOORSTEP DELIVERY WORKS:
+Step 1: Go to Services > Doorstep Delivery.
+Step 2: Or on the booking page, select "Doorstep Delivery" option.
+Step 3: Enter your delivery address (home, office, or any accessible location).
+Step 4: Choose delivery date and time window.
+Step 5: The driver will bring the car to your location.
+Step 6: Inspection is done on-site before you take the car.
+Step 7: At the end of the rental, the driver picks the car up from your drop location.
+
+CHOOSE DELIVERY LOCATION:
+- You can see a map to select your precise delivery location.
+- The system calculates if your location is within the serviceable delivery zone.
+- Doorstep delivery is available in Hyderabad and select surrounding areas.
+- Extra delivery charges may apply for locations beyond the standard zone (check on booking page).
+
+DOORSTEP DELIVERY POLICIES:
+- You must be present at the delivery location to receive the car.
+- A valid driving license is required for Rental Only doorstep deliveries.
+- The car will be inspected before handover. Note any pre-existing damage.
+- Return pickup must be arranged in advance — inform the driver/admin of the final drop location.
+- Doorstep delivery is not available for With Driver luxury bookings (driver manages logistics).
+
+WHEN TO USE DOORSTEP DELIVERY:
+- When you don't want to travel to a pickup point.
+- For convenience during corporate or VIP bookings.
+- When you need the car first thing in the morning.
+- Available for both standard and premium car categories.

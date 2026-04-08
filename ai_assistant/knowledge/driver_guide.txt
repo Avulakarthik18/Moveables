@@ -1,0 +1,67 @@
+CarRentalPro — Driver Guide (RoadMind AI Knowledge Base)
+
+OVERVIEW:
+CarRentalPro has a registered driver network. Drivers are independent professionals who register on the platform and are assigned trips (with driver bookings) or can accept parcel delivery jobs.
+
+HOW TO REGISTER AS A DRIVER:
+
+Step 1: Go to the Driver Registration section on CarRentalPro.
+Step 2: Fill in all required details:
+  - Full name, date of birth, gender, address
+  - Mobile number (must be unique — used as driver ID)
+  - Email address
+  - Driving license number and type (LMV, HMV, etc.)
+  - License expiry date
+  - Vehicle type you are registered for (Car, SUV, etc.)
+  - Vehicle model you drive
+  - Bank account details: Account number, IFSC code, UPI ID (for payment)
+Step 3: Submit the registration form.
+Step 4: CarRentalPro Admin reviews your application.
+Step 5: Once approved, you appear in the driver pool and can be assigned trips.
+
+DRIVER APPROVAL PROCESS:
+- Registration status starts as "Pending."
+- Admin reviews the license details and other credentials.
+- If approved, status becomes "Approved" — you are now active on the platform.
+- If rejected, you may reapply with corrected details.
+
+GETTING ASSIGNED TO A TRIP:
+- When a customer books a "With Driver" car, the admin sees the booking and checks available drivers.
+- An admin assigns you to a trip if your schedule is free for those dates.
+- You will receive a notification/email with the booking details: customer name, mobile, pickup and drop locations, dates and times.
+
+HOW TO MANAGE A TRIP (TRIP CONTROL):
+- Go to Driver > Trip Control to see your active and upcoming assignments.
+- Before the trip starts: Review pick-up details and contact the customer if needed.
+- Start the trip: Click "Start Trip" when you have picked up the customer.
+- During the trip: Your live location is shared with the customer on their Live Track page.
+- End the trip: Click "End Trip" when you reach the drop location.
+- After the trip: The booking status updates to Completed automatically.
+
+PARCEL DELIVERY (FOR DRIVERS):
+- Drivers can also accept parcel delivery requests.
+- Go to Driver > Trip Control or the parcel section to view pending parcel requests.
+- Click Accept to take a parcel job. The sender will receive a 12-digit pickup code.
+- At pickup: Ask the sender for the 12-digit code. Enter it to confirm parcel collection.
+- At delivery: Ask the receiver for 4-digit OTP. Enter it to mark delivery as complete.
+- You will receive payment for successful deliveries as per the platform rate.
+
+DRIVER RULES AND CONDUCT:
+- Always arrive on time for pickups. Contact the customer if delayed.
+- If you cannot complete an assignment, notify admin immediately.
+- Never share your login or account with another person.
+- Maintain a professional appearance and attitude at all times.
+- Do not smoke or allow smoking in the rental car.
+- Ensure the car is kept clean throughout the trip.
+- Report any accidents or incidents to CarRentalPro immediately.
+
+PAYMENT TO DRIVERS:
+- Driver earnings are calculated per trip based on route distance.
+- Payments are settled to the driver's registered bank account or UPI ID.
+- Parcel jobs have a separate fixed payout per successful delivery.
+- Payment cycles and amounts are managed by the CarRentalPro admin team.
+
+IMPORTANT:
+- Drivers with expired licenses will be automatically removed from the active pool.
+- Any misconduct reports from customers may result in suspension or removal.
+- GPS location sharing is required during active trips for live tracking.

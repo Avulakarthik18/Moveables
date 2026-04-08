@@ -1,0 +1,76 @@
+CarRentalPro — Admin Guide (RoadMind AI Knowledge Base)
+
+OVERVIEW:
+Admins manage the CarRentalPro platform. Admin responsibilities include approving listings, managing drivers, monitoring trips, and overseeing all platform operations.
+
+ADMIN DASHBOARD:
+- Access via: Login as admin → Admin Dashboard.
+- Shows overview of platform stats: total bookings, pending approvals, active drivers, etc.
+- Quick links to all admin management sections.
+
+ADMIN SECTIONS:
+
+1. PENDING CAR LISTING APPROVALS (admin_approval):
+- View all car listings submitted by owners that are waiting for approval.
+- Each listing shows: car details, owner info, RC, insurance, photos.
+- Admin action: Approve or Reject each listing.
+- If Approved: Listing goes live and appears for renters to book.
+- If Rejected: Owner is notified and must fix issues before resubmitting.
+- What to check before approving:
+  * Valid registration number (unique, not duplicate)
+  * Insurance is active and not expired
+  * Reasonable price (not too low/high compared to market)
+  * Good quality photos showing the actual car
+  * Car year and details match the photos
+
+2. DRIVER MANAGEMENT (admin_drivers):
+- View all registered drivers and their status: Pending, Approved, Rejected.
+- Review driver license details, expiry dates, vehicle types.
+- Approve or Reject driver applications.
+- Key checks before approving a driver:
+  * Valid license number and not expired
+  * Correct license type for the vehicle (LMV, HMV, etc.)
+  * All required fields are filled
+  * Unique mobile number (not already in the system)
+
+3. DRIVER ASSIGNMENTS (admin_assignments):
+- View bookings that have status "Pending Platform Driver."
+- These are "With Driver" bookings where no driver has been auto-assigned.
+- Admin manually assigns an available driver to the booking.
+- To assign: Click the booking → View available drivers for those dates → Select and assign.
+- The system automatically checks which drivers are free (no overlapping bookings).
+- After assignment, the booking status changes to "Confirmed" and customer gets an email.
+
+4. SELL/BUY APPROVAL (admin_sell_buy_approval):
+- View all car sell listings submitted by private sellers.
+- Approve or Reject based on listing quality and completeness.
+- Similar checks as rental car listings: valid RC, accurate details, good photos.
+- Approved listings appear in the marketplace for buyers to browse.
+
+5. LIVE MONITORING (live-monitoring):
+- View all ongoing trips on a map in real-time.
+- See driver locations, trip routes, and estimated trip status.
+- Useful for monitoring fleet health and ensuring trips are running smoothly.
+- If a driver appears stuck or trip has not ended on time, contact the driver.
+
+ADMIN APPROVAL GUIDELINES — RED FLAGS TO REJECT:
+- Duplicate registration numbers (car already listed by another owner).
+- Expired insurance or registration date.
+- Blurry or mismatched photos.
+- Unrealistic pricing (₹100/day for a luxury car = suspicious).
+- Incomplete or incorrect driver license information.
+- Driver's license type does not match the vehicle they want to drive.
+- Suspicious listing descriptions or false information.
+
+ADMIN BEST PRACTICES:
+- Process pending approvals within 24 hours — owners and renters depend on this.
+- For borderline cases, request additional documents from the owner before approving.
+- Keep records of reasons for rejections to avoid disputes.
+- Monitor live tracking regularly during peak hours.
+- Follow up on bookings stuck in "Pending Platform Driver" status — customers are waiting.
+
+ADMIN ACCOUNT:
+- Admin accounts are separate from regular user accounts.
+- Admin credentials are managed manually — contact the platform developer to create/change admin accounts.
+- Admin accounts have access to all backend management features not visible to regular users.
+- Never share admin credentials with anyone.

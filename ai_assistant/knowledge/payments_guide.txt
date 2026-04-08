@@ -1,0 +1,72 @@
+CarRentalPro — Payments & Checkout Guide (RoadMind AI Knowledge Base)
+
+PAYMENT SYSTEM OVERVIEW:
+CarRentalPro uses Razorpay as its secure payment gateway. All payments — for rentals, purchases, and (future) parcel deliveries — are processed through Razorpay.
+
+PAYMENT METHODS ACCEPTED:
+- UPI (GPay, PhonePe, Paytm, BHIM UPI)
+- Debit cards and Credit cards
+- Net banking
+- Razorpay wallets
+
+HOW CHECKOUT WORKS (BOOKING):
+
+Step 1: After selecting a car and filling in booking details, click "Proceed to Payment."
+Step 2: You are taken to the Checkout page, which shows:
+  - Car name and details
+  - Pickup and drop details
+  - Rental type (Rental Only / With Driver)
+  - Total rental cost
+  - Security deposit (for Rental Only)
+  - Grand total to be paid
+
+Step 3: Click "Pay Now" to open the Razorpay payment popup.
+Step 4: Choose your preferred payment method and complete the transaction.
+Step 5: On successful payment:
+  - Booking is confirmed and saved to the database.
+  - You receive a booking confirmation email with all details.
+  - You are redirected to the Payment Success page.
+Step 6: On failed payment:
+  - You are redirected to the Payment Failed page.
+  - No booking is created.
+  - If money was deducted, it will be automatically reversed by Razorpay within 3-5 days.
+  - Contact Payment & Refund Support if not reversed within 7 days.
+
+SECURITY DEPOSIT:
+- Applicable only for "Rental Only" bookings.
+- The deposit amount is set by the car owner when they list the car.
+- It is collected at the time of booking (included in the grand total).
+- Purpose: To cover any damages caused during the rental period.
+- Refund: Within 24 hours of car return, if no damages are reported.
+- If damage is found: The repair cost is deducted from the deposit, and the remainder is refunded.
+- If zero damage: Full deposit is refunded.
+
+REFUND POLICY:
+- Full refund: Cancellation made more than 24 hours before pickup.
+- Partial refund (80%): Cancellation within 24 hours of pickup (20% penalty).
+- No refund: No-show (not arriving for pickup without cancellation).
+- Security deposit refund: Within 24 hours of car return (if no damage).
+- Payment failure refunds: Handled automatically by Razorpay within 3-5 business days.
+
+FAILED PAYMENT / DOUBLE CHARGE:
+- If payment failed but money was debited, the amount will be auto-reversed by Razorpay within 3-5 business days.
+- If not reversed within 7 days, go to Services > Customer Support > Payment & Refund Support.
+- Provide your transaction reference number and booking ID (if any) for investigation.
+
+CHECKOUT PROCESS FOR CAR PURCHASE (BUY):
+- When a seller accepts your bid, you are notified.
+- Go to Sell/Buy > My Buy Requests to find the accepted bid.
+- Click "Pay Now" to proceed to Razorpay checkout.
+- Payment amount = your offered (bid) price.
+- After payment, the purchase is marked as complete.
+- Vehicle transfer (RC transfer, etc.) is handled directly between buyer and seller outside the platform.
+
+INVOICES AND RECEIPTS:
+- A booking confirmation email serves as your receipt.
+- Razorpay also sends a payment receipt to your email directly.
+- For GST invoices or formal receipts, contact CarRentalPro support.
+
+IMPORTANT:
+- Never share your OTP, UPI PIN, or bank password with anyone, including CarRentalPro staff.
+- CarRentalPro will NEVER ask for your payment credentials directly.
+- All payments are encrypted and processed securely through Razorpay.

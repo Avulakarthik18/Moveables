@@ -1,0 +1,91 @@
+CarRentalPro — Customer Support Guide (RoadMind AI Knowledge Base)
+
+OVERVIEW:
+CarRentalPro provides multiple support channels to help customers, owners, and drivers resolve issues quickly.
+
+SUPPORT CHANNELS AVAILABLE:
+
+1. LIVE CHATBOT (RoadMind AI):
+- Available 24/7 on every page of the platform.
+- Click the chat bubble icon (bottom right corner) to open RoadMind AI.
+- Ask anything about bookings, parcels, car listings, policies, or car problems.
+- RoadMind AI can also access your live booking and listing data if you are logged in.
+- Best for: Instant answers, general queries, car advice, policy questions.
+
+2. EMAIL SUPPORT:
+- Go to Services > Customer Support > Email Support.
+- Fill out the support form with your email, subject, and detailed message.
+- The support team will respond within 24-48 hours.
+- Best for: Detailed complaints, billing disputes, listing issues.
+
+3. CALL SUPPORT:
+- Go to Services > Customer Support > Call Support.
+- Find the customer care number to call for direct assistance.
+- Available during business hours (typically 9 AM – 7 PM, Monday to Saturday).
+- Best for: Urgent issues, trip emergencies, driver-related complaints.
+
+4. BOOKING ASSISTANCE:
+- Go to Services > Customer Support > Booking Assistance.
+- Get step-by-step help for bookings, cancellations, and modifications.
+- Best for: Users who are confused about the booking process.
+
+5. PAYMENT & REFUND SUPPORT:
+- Go to Services > Customer Support > Payment & Refund Support.
+- For issues with failed payments, incorrect charges, or pending refunds.
+- Provide your booking ID and payment reference for faster resolution.
+- Best for: Razorpay payment failures, refund delays, deposit queries.
+
+6. FAQs AND HELP CENTER:
+- Go to Services > Customer Support > FAQs & Help Center.
+- Browse frequently asked questions organized by category.
+- Categories include: Booking, Payments, Parcels, Sellers/Buyers, Drivers, General.
+- Best for: Self-service answers to common questions.
+
+CONTACT PAGE:
+- Go to Services > Contact to see all contact methods in one place.
+- Includes the office address, phone number, email, and WhatsApp link.
+
+WHAT TO DO IN DIFFERENT SITUATIONS:
+
+CAR BREAKDOWN DURING RENTAL:
+1. Pull over safely to the side of the road.
+2. Turn on hazard lights.
+3. Call the owner (their number is in your booking email).
+4. If no response, call CarRentalPro Call Support immediately.
+5. If on a highway or dangerous location, call 112 (emergency services) first.
+
+WRONG DRIVER ASSIGNED / DRIVER NOT ARRIVED:
+1. Contact the driver using the mobile number in your booking confirmation email.
+2. If unreachable, call CarRentalPro Call Support.
+3. The admin will reassign or resolve the issue.
+
+PAYMENT FAILED BUT MONEY DEDUCTED:
+1. Go to Payment & Refund Support.
+2. Provide your booking ID and bank transaction reference.
+3. The team will verify and process a refund within 5-7 business days.
+4. Razorpay usually reverses failed payment deductions automatically within 3-5 days.
+
+PARCEL NOT DELIVERED:
+1. Check the parcel status in Parcel > Track Parcel.
+2. If status shows Accepted/Picked Up but not Delivered, contact Call Support.
+3. Provide your parcel request ID.
+
+COMMON FAQS:
+
+Q: Can I change my pickup location after booking?
+A: No, pickup location changes are not supported after booking. Cancel and rebook if needed.
+
+Q: Can I extend my rental period?
+A: Contact the car owner directly or call support to check if extension is possible before your drop time.
+
+Q: What if I damage the rental car?
+A: Any damages will be assessed. Costs are deducted from your security deposit. If damage exceeds the deposit, you will be billed for the difference.
+
+Q: How do I get my security deposit back?
+A: Deposits are refunded within 24 hours of car return, if the car is in good condition. Check your email for the refund notification.
+
+Q: Can I book a car for someone else?
+A: You can book in your account, but the primary driver must provide their license. You can add a nominee driver for Rental Only bookings.
+
+Q: I forgot my password. How do I reset it?
+A: Go to Login > Forgot Password. Enter your registered email to receive a 6-digit OTP. Use the OTP to reset your password.

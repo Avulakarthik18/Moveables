@@ -40,10 +40,9 @@ sed -i \"s/listen 8080;/listen \${PORT:-8080};/g\" /etc/nginx/conf.d/default.con
 \n\
 nginx\n\
 \n\
-# Use 1 worker to keep memory usage under 512MB RAM\n\
-# Use 300s timeout to allow the large 368MB AI model to load without being killed\n\
-# Consolidated Backend handles both main API and ML API\n\
-gunicorn -w 1 --timeout 300 --chdir /app/backend -b 127.0.0.1:5000 app:app\n" > /app/start.sh
+# Use 1 worker but 4 threads to prevent lag during slow AI generation or ML tasks
+# Consolidated Backend handles both main API and ML API
+gunicorn -w 1 --threads 4 --timeout 300 --chdir /app/backend -b 127.0.0.1:5000 app:app\n" > /app/start.sh
 
 RUN chmod +x /app/start.sh
 
