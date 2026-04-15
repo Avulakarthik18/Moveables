@@ -101,8 +101,24 @@ def load_ml_model_lazy():
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-engine = create_engine(DATABASE_URL, pool_pre_ping=True)
-SessionLocal = sessionmaker(bind=engine)
+engine = None
+SessionLocal = None
+
+try:
+    if DATABASE_URL:
+        # Some URL fixes for postgresql
+        if DATABASE_URL.startswith("postgres://"):
+            DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+        engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+        SessionLocal = sessionmaker(bind=engine)
+    else:
+        print("⚠️ DATABASE_URL is missing! Falling back to sqlite.")
+        engine = create_engine("sqlite:///fallback.db", pool_pre_ping=True)
+        SessionLocal = sessionmaker(bind=engine)
+except Exception as db_err:
+    print(f"❌ Failed to initialize engine: {db_err}")
+    engine = create_engine("sqlite:///fallback.db", pool_pre_ping=True)
+    SessionLocal = sessionmaker(bind=engine)
 
 
 
